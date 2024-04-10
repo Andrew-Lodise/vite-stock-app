@@ -13,7 +13,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />
   },
   {
-    path: '/stocks/:symbol/:name',
+    path: '/stocks/:symbol/',
     element: <Stock />
   }
 ])

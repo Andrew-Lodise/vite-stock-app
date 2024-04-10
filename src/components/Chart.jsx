@@ -20,8 +20,9 @@ export default function Chart(props) {
       }
     ]
   }
-
   const options = {
+    maintainAspectRatio: false, // Set to false to allow manual adjustment of aspect ratio
+    aspectRatio: 2, // Adjust the aspect ratio to control the height of the chart
     borderWidth: 2,
     plugins: {
       legend: {
@@ -60,9 +61,8 @@ export default function Chart(props) {
   }
 
   return (
-    <div className='w-full flex items-center justify-center h-[500px] bg-[#26272B]'>
+    <div className='w-full flex items-center justify-center h-[300px] md:h-[550px] bg-[#26272B]'>
       <Line data={data} options={options} className='w-full max-w-[1000px] h-full]'/>
-
     </div>
 
   )
