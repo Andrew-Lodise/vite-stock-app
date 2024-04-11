@@ -21,7 +21,7 @@ export default function Stock(props) {
   const name = params.name
 
   //finding the stock in the data array
-  let targetStock = null;
+  var targetStock = null;
   for(const stock of stocks){
     if (stock.symbol == symbol)
     targetStock = stock
@@ -36,7 +36,7 @@ export default function Stock(props) {
       // messes something up when I'm not out of requests (probably becuase response.data['information'] can't be found)
       // yup when you get the correct data the response.data['information'] is undefinded so then change the check to be if it's not undefined, which means there's no more request
       
-      if (response.data['Information'][0] == 'T'){
+      if (response.data['Information'] !== undefined){
         setoutOfRequests(true);
         return;
       }
@@ -80,7 +80,7 @@ export default function Stock(props) {
       console.log(error)
       setShortTermStockData({error: "error loading data from Stock.js useEffect (short term reqeusst) (request to alphavantage)"})
     })
-  }, [symbol])
+  }, [symbol, outOfRequests])
 
   return (
     <div className='bg-[#26272B] w-full min-h-screen text-[#F4F4F4] flex flex-col items-center'>
@@ -93,30 +93,41 @@ export default function Stock(props) {
           <p className='text-[#6900FF]'>({symbol})</p>
         </h1>
 
-        <div className='w-full  text-2xl border-[1px] border-[#6900FF] rounded-md shadow-based p-4 my-2'>
+        <div className='size-[201px] bg-green-200 my-4 rounded-md border-[1px] border--[#6900FF]'>
+          <img src={targetStock.logo} alt={`${targetStock.name} logo`} 
+          className='border-[2px] border-[#6900FF] rounded-md shadow-based'/>
+        </div>
+
+        <div className='w-full  text-2xl border-[1px] border-[#6900FF] rounded-md shadow-based p-4 my-2
+        hover:scale-[102%] ease-in-out duration-300'>
           {targetStock.description}
         </div>
 
         {/** if request limit is reached */}
         {outOfRequests && (
           <div className='w-full  text-2xl flex flex-col gap-y-2 mt-8'>
-            <h1 className='w-full border-[1px] border-[#6900FF] rounded-md shadow-based p-4'>
+            <h1 className='w-full border-[1px] border-[#6900FF] rounded-md shadow-based p-4 hover:scale-[102%] 
+            duration-300 ease-in-out'>
               Sorry, Out of requests for today from Alpha Vantage API, check back tomorrow when more API requests are allowed!
             </h1>
           </div>
         
         )}
 
-        <div className='text-2xl font-medium '>
+        {!outOfRequests && (
+          <div className='text-2xl font-medium '>
           Short Term Stock Data - Past 5 Months
         </div>
+        )}
         {/** if within reqeust limit */}
         {shortTermStockData && shortTermStockLabels && (
           <Chart input_data={shortTermStockData} input_labels={shortTermStockLabels} symbol={symbol.toUpperCase()}/>
         )}
+        {!outOfRequests && (
         <div className='text-2xl font-medium '>
           Long Stock Data - Max 25 Years
         </div>
+        )}
         {longTermStockData && longTermStockLabels && (
           <Chart input_data={longTermStockData} input_labels={longTermStockLabels} symbol={symbol.toUpperCase()}/>
         )}

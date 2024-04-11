@@ -12,7 +12,6 @@ export default function StockItem(props) {
       <div className='w-[150px] flex justify-center'>
         <img src={logo} alt="logo" className=' h-[50px]'/>
       </div>
-      
     </div>
   )
 }
