@@ -7,9 +7,14 @@ import { Link } from 'react-router-dom'
 import stocks from '../data/stock_data'
 
 export default function Stock(props) {
-  const [stockData, setStockData] = useState()
-  const [stockLabels, setStockLabels] = useState()
+  const [shortTermStockData, setShortTermStockData] = useState()
+  const [shortTermStockLabels, setShortTermStockLabels] = useState()
+
+  const [longTermStockData, setLongTermStockData] = useState()
+  const [longTermStockLabels, setLongTermStockLabels] = useState()
+
   const [outOfRequests, setoutOfRequests] = useState(false)
+  
   const params = useParams()
 
   const symbol = params.symbol
@@ -22,37 +27,63 @@ export default function Stock(props) {
     targetStock = stock
   }
 
-  const url=`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=0M2L2ERG67HMZNGI`
+  const shortTermUrl=`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=0M2L2ERG67HMZNGI`
+  const longTermUrl=`https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED&symbol=${symbol}&apikey=0M2L2ERG67HMZNGI`
 
   useEffect(() => {
-    axios.get(url).then((response) => {
+    axios.get(shortTermUrl).then((response) => {
       // check if were out of reqeust
+      // messes something up when I'm not out of requests (probably becuase response.data['information'] can't be found)
+      // yup when you get the correct data the response.data['information'] is undefinded so then change the check to be if it's not undefined, which means there's no more request
+      /*
       if (response.data['Information'][0] == 'T'){
         setoutOfRequests(true);
         return;
-      }
+      }*/
 
-      const timeSeries = response.data['Time Series (Daily)'];
+      // only makes second request call if first returns actual information
+      // long term data requests
+      axios.get(longTermUrl).then((response) =>{
 
-      const labels = [];
-      const data = [];
+      const timeSeries = response.data['Weekly Adjusted Time Series'];
+
+      let labels = [];
+      let data = [];
 
       Object.entries(timeSeries).forEach(([date, dataEntry]) => {
         labels.push(date);
         data.push(dataEntry['4. close']);
       });
 
-      setStockData(data.reverse())
-      setStockLabels(labels.reverse())
+      setLongTermStockData(data.reverse())
+      setLongTermStockLabels(labels.reverse())
+      }).catch((error) => {
+        console.log(error)
+        setLongTermStockData({error: "error loading data from Stock.js useEffect (long term reqeusst) (request to alphavantage)"})
+      })
+
+      // short term request
+      const timeSeries = response.data['Time Series (Daily)'];
+
+      let labels = [];
+      let data = [];
+
+      Object.entries(timeSeries).forEach(([date, dataEntry]) => {
+        labels.push(date);
+        data.push(dataEntry['4. close']);
+      });
+
+      setShortTermStockData(data.reverse())
+      setShortTermStockLabels(labels.reverse())
 
     }).catch((error) => {
       console.log(error)
-      setStockData({error: "error loading data from Stock.js useEffect (request to alphavantage)"})
+      setShortTermStockData({error: "error loading data from Stock.js useEffect (short term reqeusst) (request to alphavantage)"})
     })
   }, [symbol])
 
   return (
-    <div className='bg-[#26272B] w-full  text-[#F4F4F4] flex flex-col items-center'>
+    <div className='bg-[#26272B] w-full min-h-screen text-[#F4F4F4] flex flex-col items-center'>
       <Navbar />
       
       <div className='w-full max-w-[1000px] flex flex-col items-center p-2'>
@@ -76,12 +107,24 @@ export default function Stock(props) {
         
         )}
 
+        <div className='text-2xl font-medium '>
+          Short Term Stock Data - Past 5 Months
+        </div>
         {/** if within reqeust limit */}
-        { stockData && stockLabels && (
-          <Chart input_data={stockData} input_labels={stockLabels} symbol={symbol.toUpperCase()}/>
+        {shortTermStockData && shortTermStockLabels && (
+          <Chart input_data={shortTermStockData} input_labels={shortTermStockLabels} symbol={symbol.toUpperCase()}/>
         )}
-        <Chart symbol={symbol.toUpperCase()}/>
+        <div className='text-2xl font-medium '>
+          Long Stock Data - Max 25 Years
+        </div>
+        {longTermStockData && longTermStockLabels && (
+          <Chart input_data={longTermStockData} input_labels={longTermStockLabels} symbol={symbol.toUpperCase()}/>
+        )}
+        {/* FOR TESTING <Chart symbol={symbol.toUpperCase()}/>*/}
 
+
+
+        
         <Link to='/' className='border-[1px] border-[#6900FF] rounded-md shadow-based p-4 w-fit 
         hover:bg-[#6900FF] hover:text-[#26272B] text-2xl my-4 self-start'>
           Back to Home

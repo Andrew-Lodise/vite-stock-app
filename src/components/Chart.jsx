@@ -6,13 +6,13 @@ import { example_MSFT_data, example_MSFT_labels } from '../data/example_data';
 export default function Chart(props) {
 
   const data = {
-    //labels: props.input_labels,
-    labels: example_MSFT_labels,
+    labels: props.input_labels,
+    //labels: example_MSFT_labels,
     datasets: [
       {
         label: `${props.symbol} Chart`,
-        //data: props.input_data,
-        data: example_MSFT_data,
+        data: props.input_data,
+        //data: example_MSFT_data,
         fill: true,
         backgroundColor: 'rgba(105,0,255, .7)',
         borderColor: 'rgb(244,244,244)',
@@ -61,7 +61,8 @@ export default function Chart(props) {
   }
 
   return (
-    <div className='w-full flex items-center justify-center h-[300px] md:h-[550px] bg-[#26272B]'>
+    <div className='w-full flex items-center justify-center h-[300px] md:h-[550px] bg-[#26272B]
+    border-[1px] border-[#6900FF] rounded-md shadow-based my-2 py-2'>
       <Line data={data} options={options} className='w-full max-w-[1000px] h-full]'/>
     </div>
 
