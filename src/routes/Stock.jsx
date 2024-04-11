@@ -35,11 +35,11 @@ export default function Stock(props) {
       // check if were out of reqeust
       // messes something up when I'm not out of requests (probably becuase response.data['information'] can't be found)
       // yup when you get the correct data the response.data['information'] is undefinded so then change the check to be if it's not undefined, which means there's no more request
-      /*
+      
       if (response.data['Information'][0] == 'T'){
         setoutOfRequests(true);
         return;
-      }*/
+      }
 
       // only makes second request call if first returns actual information
       // long term data requests
