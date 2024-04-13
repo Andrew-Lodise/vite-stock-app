@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar'
 import Chart from '../components/Chart'
 import { Link } from 'react-router-dom'
 import stocks from '../data/stock_data'
+import ShortTermAnalysis from '../components/ShortTermAnalysis'
 
 export default function Stock(props) {
   const [shortTermStockData, setShortTermStockData] = useState()
@@ -93,9 +94,9 @@ export default function Stock(props) {
           <p className='text-[#6900FF]'>({symbol})</p>
         </h1>
 
-        <div className='size-[201px] bg-green-200 my-4 rounded-md border-[1px] border--[#6900FF]'>
+        <div className='size-[201px] my-4'>
           <img src={targetStock.logo} alt={`${targetStock.name} logo`} 
-          className='border-[2px] border-[#6900FF] rounded-md shadow-based'/>
+          className='hover:scale-[102%] duration-300 ease-in-out'/>
         </div>
 
         <div className='w-full  text-2xl border-[1px] border-[#6900FF] rounded-md shadow-based p-4 my-2
@@ -111,26 +112,26 @@ export default function Stock(props) {
               Sorry, Out of requests for today from Alpha Vantage API, check back tomorrow when more API requests are allowed!
             </h1>
           </div>
-        
         )}
 
         {!outOfRequests && (
-          <div className='text-2xl font-medium '>
-          Short Term Stock Data - Past 5 Months
-        </div>
+          <div className='w-full'>
+            <div className='text-2xl font-medium pt-4'>
+              Short Term Stock Data - Past 5 Months
+            </div>
+            <Chart input_data={shortTermStockData} input_labels={shortTermStockLabels} symbol={symbol.toUpperCase()}/>
+
+            <ShortTermAnalysis data={shortTermStockData} labels={shortTermStockLabels}/>
+
+            <div className='text-2xl font-medium pt-4'>
+              Long Stock Data - Max 25 Years
+            </div>
+            <Chart input_data={longTermStockData} input_labels={longTermStockLabels} symbol={symbol.toUpperCase()}/>
+
+            <ShortTermAnalysis data={longTermStockData} labels={longTermStockData}/>
+          </div>
         )}
-        {/** if within reqeust limit */}
-        {shortTermStockData && shortTermStockLabels && (
-          <Chart input_data={shortTermStockData} input_labels={shortTermStockLabels} symbol={symbol.toUpperCase()}/>
-        )}
-        {!outOfRequests && (
-        <div className='text-2xl font-medium '>
-          Long Stock Data - Max 25 Years
-        </div>
-        )}
-        {longTermStockData && longTermStockLabels && (
-          <Chart input_data={longTermStockData} input_labels={longTermStockLabels} symbol={symbol.toUpperCase()}/>
-        )}
+
         {/* FOR TESTING <Chart symbol={symbol.toUpperCase()}/>*/}
 
 

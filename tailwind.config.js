@@ -7,6 +7,7 @@ export default {
     extend: {
       boxShadow: {
         based: '0 0 12px rgba(0,0,0,.9)',
+        basedHover: '0 0 24px rgba(0,0,0,.9)'
       },
     },
   },

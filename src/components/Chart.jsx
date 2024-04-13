@@ -62,7 +62,8 @@ export default function Chart(props) {
 
   return (
     <div className='w-full flex items-center justify-center h-[300px] md:h-[550px] bg-[#26272B]
-    border-[1px] border-[#6900FF] rounded-md shadow-based my-2 py-2 hover:scale-[102%]'>
+    border-[1px] border-[#6900FF] rounded-md shadow-based my-2 py-2 hover:shadow-basedHover
+    duration-300 ease-in-out'>
       <Line data={data} options={options} className='w-full max-w-[1000px] h-full]'/>
     </div>
   )

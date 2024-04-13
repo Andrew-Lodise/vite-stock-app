@@ -27,7 +27,6 @@ export default function Stocks() {
           </div>
         ))}
         </div>
-
       </div>
     </>
   )
