@@ -9,8 +9,8 @@ function App() {
     <div className='w-full h-screen bg-[#26272B] text-[#F4F4F4]'>
       <Navbar />
       <Stocks />
-      <Chart input_data={example_MSFT_data} input_labels={example_MSFT_labels}/>
-      <ShortTermAnalysis data={example_MSFT_data} labels={example_MSFT_labels}/>
+      {/*<Chart input_data={example_MSFT_data} input_labels={example_MSFT_labels}/>*/}
+      {/*<ShortTermAnalysis data={example_MSFT_data} labels={example_MSFT_labels}/>*/}
       
       
     </div>

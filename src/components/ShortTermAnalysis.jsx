@@ -13,11 +13,15 @@ const ShortTermAnalysis = (props) => {
   else{
     return
   }
+
+  // Calculating average here
+  const sum = data.reduce((acc, curr) => acc + curr, 0);
+  const average = sum / data.length;
   
 
 
   return (
-    <div className='w-full h- bg-gray-900 flex justify-center items-center flex-col py-8'>
+    <div className='w-full h-  flex justify-center items-center flex-col py-8'>
       <div name='container' className=' w-full max-w-[500px] grid grid-cols-1 grid-rows-5 text-2xl border-[1px] border-[#6900ff]
       rounded-md '>
         <div className='group grid grid-cols-2 grid-rows-1 border-b-[1px] border-[#6900ff]'>
@@ -71,7 +75,7 @@ const ShortTermAnalysis = (props) => {
           </span>
           <span className='text-center group-hover:text-[#6900FF] duration-300 ease-in-out
            cursor-default'>
-            %{(((data[data.length -1] - data[0])/data[0]) * 100).toFixed(2)}
+            {average.toFixed(2)}
           </span>
 
         </div>
