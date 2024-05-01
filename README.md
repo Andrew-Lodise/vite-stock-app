@@ -1,8 +1,7 @@
-# React + Vite
+# Stock React App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This App allows the user to choose between popular stocks.
+When the user selects a stock this app sends a request to AlphaVantage API,
+retrieves and processes the data, then displays the short and long term
+stock data to the user. It also calculates so statistics like average price
+and net gain/loss.
